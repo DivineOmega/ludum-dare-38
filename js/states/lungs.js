@@ -5,6 +5,8 @@ var lungsState = {
     bacterias: null,
     antibodyWeapon: null,
     sounds: {},
+    scoreText: null,
+    energyText: null,
 
     maxSimultaneousBacteria: 10,
     totalBacteria: 40,
@@ -22,12 +24,13 @@ var lungsState = {
 
     create: function() {
 
-        game.stage.backgroundColor = "#FFB6C1";
+        game.stage.backgroundColor = '#FFB6C1';
 
         this.antibody = game.add.sprite(1920/2, 1080/2, 'antibody');
         this.antibody.anchor.setTo(0.5, 0.5);
         game.physics.enable(this.antibody, Phaser.Physics.ARCADE);
         this.antibody.body.allowRotation = false;
+        this.antibody.hp = 10;
 
         this.antibodyWeapon = game.add.weapon(6, 'antibody-bullet');
         this.antibodyWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -44,6 +47,10 @@ var lungsState = {
         this.bacterias = game.add.group();
         this.bacterias.enableBody = true;
         this.bacterias.physicsBodyType = Phaser.Physics.ARCADE;
+
+        var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
+        this.scoreText = game.add.text(50, 50, '? bacteria remaining in lungs', style);
+        this.energyText = game.add.text(1600, 50, 'Energy: ?', style);
 
     },
 
@@ -88,7 +95,7 @@ var lungsState = {
 
         game.physics.arcade.collide(this.antibodyWeapon.bullets, this.bacterias, this.bacteriaHit, null, this);
 
-        game.physics.arcade.collide(this.antibody, this.bacterias);
+        game.physics.arcade.collide(this.antibody, this.bacterias, this.antibodyHit, null, this);
 
         game.physics.arcade.collide(this.bacterias, this.bacterias);
 
@@ -102,6 +109,23 @@ var lungsState = {
             game.state.start('body');
         }
 
+        if (!this.antibody.alive) {
+            game.state.start('body');
+        }
+
+        this.scoreText.text = (this.totalBacteria - this.bacterias.countDead())+' bacteria remaining in lungs';
+        this.energyText.text = 'Energy: '+(this.antibody.hp).toFixed(2);
+
+    },
+
+    antibodyHit: function(antibody, bacteria) {
+        antibody.hp = antibody.hp - 0.01;
+
+        if (antibody.hp <= 0) {
+            game.add.tween(antibody.scale).to({ x: 0, y: 0}, 500, Phaser.Easing.Bounce.Out, true, 0, 0).onComplete.add(function() {
+                antibody.kill();
+            }, this);
+        }
     },
 
     bacteriaHit: function(bullet, bacteria) {
