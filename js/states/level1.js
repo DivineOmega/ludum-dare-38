@@ -2,7 +2,7 @@
 var level1State = {
 
     antibody: null,
-    bacteria: [],
+    bacterias: [],
     antibodyWeapon: null,
     sounds: {},
 
@@ -32,23 +32,28 @@ var level1State = {
         this.antibodyWeapon.bulletAngleOffset = 90;
         this.antibodyWeapon.bulletAngleVariance = 5;
         this.antibodyWeapon.trackSprite(this.antibody, 0, 0, true);
-
         game.add.tween(this.antibody.scale).to({ x: 0.9, y: 0.9}, 500, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
 
         this.sounds.splat1 = game.add.audio('splat1');
 
-        this.bacteria = game.add.sprite(100, 100, 'bacteria');
-        this.bacteria.anchor.setTo(0.5, 0.5);
-        game.physics.enable(this.bacteria, Phaser.Physics.ARCADE);
+        this.bacterias = game.add.group();
+        this.bacterias.enableBody = true;
+        this.bacterias.physicsBodyType = Phaser.Physics.ARCADE;
 
-        game.add.tween(this.bacteria.scale).to({ x: 0.9, y: 0.9}, 250, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
+        for (var i = 0; i < 10; i++) {
+            var bacteria = this.bacterias.create(100 + (i*150), 100, 'bacteria');
+            bacteria.anchor.setTo(0.5, 0.5);
+            bacteria.body.drag.setTo(4000);
+            game.add.tween(bacteria.scale).to({ x: 0.9, y: 0.9}, 250, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
+            bacteria.hp = 3;
+        }
 
     },
 
 
     update: function() {
 
-        this.antibody.rotation = game.physics.arcade.moveToPointer(this.antibody, 60, game.input.activePointer, 2000);
+        this.antibody.rotation = game.physics.arcade.moveToPointer(this.antibody, 60, game.input.activePointer, 1500);
 
         if (game.input.activePointer.leftButton.isDown) {
             var bullet = this.antibodyWeapon.fire();
@@ -60,7 +65,29 @@ var level1State = {
                         
         }
 
+        this.bacterias.forEach(function(bacteria) {
+            radians = game.physics.arcade.angleBetween(bacteria, this.antibody);                
+            degrees = radians * (180/Math.PI);                        
+            game.physics.arcade.velocityFromAngle(degrees, 150, bacteria.body.velocity); 
+        }, this);
+
+        game.physics.arcade.collide(this.antibodyWeapon.bullets, this.bacterias, this.bacteriaHit);
+
+        game.physics.arcade.collide(this.antibody, this.bacterias);
+
+        game.physics.arcade.collide(this.bacterias, this.bacterias);
+
     },
+
+    bacteriaHit: function(bullet, bacteria) {
+        bullet.kill();
+
+        bacteria.hp = bacteria.hp - 1;
+
+        if (bacteria.hp <= 0 ) {
+            bacteria.kill();
+        }
+    }
 
 
 }
