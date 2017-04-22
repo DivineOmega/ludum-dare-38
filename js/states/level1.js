@@ -28,7 +28,7 @@ var level1State = {
         this.antibodyWeapon = game.add.weapon(6, 'antibody-bullet');
         this.antibodyWeapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
         this.antibodyWeapon.bulletSpeed = 600;
-        this.antibodyWeapon.fireRate = 400;
+        this.antibodyWeapon.fireRate = 200;
         this.antibodyWeapon.bulletAngleOffset = 90;
         this.antibodyWeapon.bulletAngleVariance = 5;
         this.antibodyWeapon.trackSprite(this.antibody, 0, 0, true);
