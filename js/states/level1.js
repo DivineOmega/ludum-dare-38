@@ -84,8 +84,11 @@ var level1State = {
 
         bacteria.hp = bacteria.hp - 1;
 
-        if (bacteria.hp <= 0 ) {
-            bacteria.kill();
+        if (bacteria.hp <= 0 ){
+            game.add.tween(bacteria.scale).to({ x: 0, y: 0}, 500, Phaser.Easing.Bounce.Out, true, 0, 0).onComplete.add(function() {
+                bacteria.kill();
+            }, this);
+            
         }
     }
 
