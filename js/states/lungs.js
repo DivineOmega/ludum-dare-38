@@ -6,6 +6,9 @@ var lungsState = {
     antibodyWeapon: null,
     sounds: {},
 
+    maxSimultaneousBacteria: 10,
+    totalBacteria: 40,
+
     preload: function() {
         
         game.load.image('antibody', 'assets/sprites/antibody.png');
@@ -42,23 +45,22 @@ var lungsState = {
         this.bacterias.enableBody = true;
         this.bacterias.physicsBodyType = Phaser.Physics.ARCADE;
 
-        for (var i = 0; i < 10; i++) {
+    },
 
-            var x = 10;
-            var y = 10
+    spawnBacteria : function() {
+        var x = 10;
+        var y = 10
 
-            while((x > 0 && x < 1920) && (y > 0 && y < 1080)) {
-                x = game.rnd.integerInRange(-500, 1920+500);
-                y = game.rnd.integerInRange(-500, 1080+500);
-            }
-
-            var bacteria = this.bacterias.create(x, y, 'bacteria');
-            bacteria.anchor.setTo(0.5, 0.5);
-            bacteria.body.drag.setTo(2000);
-            game.add.tween(bacteria.scale).to({ x: 0.9, y: 0.9}, 300, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
-            bacteria.hp = 3;
+        while((x > 0 && x < 1920) && (y > 0 && y < 1080)) {
+            x = game.rnd.integerInRange(-500, 1920+500);
+            y = game.rnd.integerInRange(-500, 1080+500);
         }
 
+        var bacteria = this.bacterias.create(x, y, 'bacteria');
+        bacteria.anchor.setTo(0.5, 0.5);
+        bacteria.body.drag.setTo(2000);
+        game.add.tween(bacteria.scale).to({ x: 0.9, y: 0.9}, 300, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
+        bacteria.hp = 3;
     },
 
 
@@ -90,7 +92,13 @@ var lungsState = {
 
         game.physics.arcade.collide(this.bacterias, this.bacterias);
 
-        if (this.bacterias.countLiving() <= 0) {
+        if (this.bacterias.countLiving() + this.bacterias.countDead() < this.totalBacteria) {
+            if (this.bacterias.countLiving() < this.maxSimultaneousBacteria) {
+                this.spawnBacteria();
+            }
+        }
+
+        if (this.bacterias.countDead() >= this.totalBacteria) {
             game.state.start('body');
         }
 
