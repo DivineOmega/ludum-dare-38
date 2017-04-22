@@ -41,10 +41,19 @@ var level1State = {
         this.bacterias.physicsBodyType = Phaser.Physics.ARCADE;
 
         for (var i = 0; i < 10; i++) {
-            var bacteria = this.bacterias.create(100 + (i*150), 100, 'bacteria');
+
+            var x = 10;
+            var y = 10
+
+            while((x > 0 && x < 1920) && (y > 0 && y < 1080)) {
+                x = game.rnd.integerInRange(-500, 1920+500);
+                y = game.rnd.integerInRange(-500, 1080+500);
+            }
+
+            var bacteria = this.bacterias.create(x, y, 'bacteria');
             bacteria.anchor.setTo(0.5, 0.5);
-            bacteria.body.drag.setTo(4000);
-            game.add.tween(bacteria.scale).to({ x: 0.9, y: 0.9}, 250, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
+            bacteria.body.drag.setTo(2000);
+            game.add.tween(bacteria.scale).to({ x: 0.9, y: 0.9}, 300, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
             bacteria.hp = 3;
         }
 
@@ -67,7 +76,7 @@ var level1State = {
 
         this.bacterias.forEach(function(bacteria) {
             radians = game.physics.arcade.angleBetween(bacteria, this.antibody);                
-            degrees = radians * (180/Math.PI);                        
+            degrees = radians * (180/Math.PI);               
             game.physics.arcade.velocityFromAngle(degrees, 150, bacteria.body.velocity); 
         }, this);
 
