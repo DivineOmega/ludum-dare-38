@@ -1,5 +1,5 @@
 
-var level1State = {
+var lungsState = {
 
     antibody: null,
     bacterias: null,
@@ -89,7 +89,7 @@ var level1State = {
         game.physics.arcade.collide(this.bacterias, this.bacterias);
 
         if (this.bacterias.countLiving() <= 0) {
-            game.state.start('level1');
+            game.state.start('body');
         }
 
     },
