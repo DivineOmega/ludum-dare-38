@@ -2,7 +2,7 @@
 var level1State = {
 
     antibody: null,
-    bacterias: [],
+    bacterias: null,
     antibodyWeapon: null,
     sounds: {},
 
@@ -87,6 +87,10 @@ var level1State = {
         game.physics.arcade.collide(this.antibody, this.bacterias);
 
         game.physics.arcade.collide(this.bacterias, this.bacterias);
+
+        if (this.bacterias.countLiving() <= 0) {
+            game.state.start('level1');
+        }
 
     },
 
