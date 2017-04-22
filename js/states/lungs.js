@@ -45,8 +45,6 @@ var lungsState = {
         this.sounds.impactSplat = game.add.audio('impact-splat');
 
         this.bacterias = game.add.group();
-        this.bacterias.enableBody = true;
-        this.bacterias.physicsBodyType = Phaser.Physics.ARCADE;
 
         var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
         this.scoreText = game.add.text(50, 50, '? bacteria remaining in lungs', style);
@@ -55,19 +53,9 @@ var lungsState = {
     },
 
     spawnBacteria : function() {
-        var x = 10;
-        var y = 10
-
-        while((x > 0 && x < 1920) && (y > 0 && y < 1080)) {
-            x = game.rnd.integerInRange(-500, 1920+500);
-            y = game.rnd.integerInRange(-500, 1080+500);
-        }
-
-        var bacteria = this.bacterias.create(x, y, 'bacteria');
-        bacteria.anchor.setTo(0.5, 0.5);
-        bacteria.body.drag.setTo(2000);
-        game.add.tween(bacteria.scale).to({ x: 0.9, y: 0.9}, 300, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
-        bacteria.hp = 3;
+        
+        this.bacterias.add(new Bacteria(game, this.antibody));
+        
     },
 
 
@@ -88,9 +76,7 @@ var lungsState = {
         }
 
         this.bacterias.forEach(function(bacteria) {
-            radians = game.physics.arcade.angleBetween(bacteria, this.antibody);                
-            degrees = radians * (180/Math.PI);               
-            game.physics.arcade.velocityFromAngle(degrees, 150, bacteria.body.velocity); 
+            bacteria.update();
         }, this);
 
         game.physics.arcade.collide(this.antibodyWeapon.bullets, this.bacterias, this.bacteriaHit, null, this);
@@ -129,18 +115,9 @@ var lungsState = {
     },
 
     bacteriaHit: function(bullet, bacteria) {
-        bullet.kill();
-
         this.sounds.impactSplat.play();
-
-        bacteria.hp = bacteria.hp - 1;
-
-        if (bacteria.hp <= 0 ){
-            game.add.tween(bacteria.scale).to({ x: 0, y: 0}, 500, Phaser.Easing.Bounce.Out, true, 0, 0).onComplete.add(function() {
-                bacteria.kill();
-            }, this);
-            
-        }
+        bullet.kill();
+        bacteria.takeDamage();
     }
 
 
