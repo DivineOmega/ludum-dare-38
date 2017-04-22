@@ -49,10 +49,6 @@ var lungsState = {
 
     update: function() {
 
-        this.bacterias.forEach(function(bacteria) {
-            bacteria.update();
-        }, this);
-
         game.physics.arcade.collide(this.antibody.weapon.bullets, this.bacterias, this.bacteriaHit, null, this);
 
         game.physics.arcade.collide(this.antibody, this.bacterias, this.antibodyHit, null, this);
