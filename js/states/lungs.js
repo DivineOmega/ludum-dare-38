@@ -13,6 +13,7 @@ var lungsState = {
         game.load.audio('splat1', 'assets/audio/splat1.mp3');
 
         game.load.image('bacteria', 'assets/sprites/bacteria.png');
+        game.load.audio('impact-splat', 'assets/audio/impact-splat.mp3');
 
     },
 
@@ -35,6 +36,7 @@ var lungsState = {
         game.add.tween(this.antibody.scale).to({ x: 0.9, y: 0.9}, 500, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
 
         this.sounds.splat1 = game.add.audio('splat1');
+        this.sounds.impactSplat = game.add.audio('impact-splat');
 
         this.bacterias = game.add.group();
         this.bacterias.enableBody = true;
@@ -82,7 +84,7 @@ var lungsState = {
             game.physics.arcade.velocityFromAngle(degrees, 150, bacteria.body.velocity); 
         }, this);
 
-        game.physics.arcade.collide(this.antibodyWeapon.bullets, this.bacterias, this.bacteriaHit);
+        game.physics.arcade.collide(this.antibodyWeapon.bullets, this.bacterias, this.bacteriaHit, null, this);
 
         game.physics.arcade.collide(this.antibody, this.bacterias);
 
@@ -96,6 +98,8 @@ var lungsState = {
 
     bacteriaHit: function(bullet, bacteria) {
         bullet.kill();
+
+        this.sounds.impactSplat.play();
 
         bacteria.hp = bacteria.hp - 1;
 
