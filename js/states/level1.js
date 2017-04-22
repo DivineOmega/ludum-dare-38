@@ -62,8 +62,10 @@ var level1State = {
 
     update: function() {
 
-        this.antibody.rotation = game.physics.arcade.moveToPointer(this.antibody, 60, game.input.activePointer, 1500);
-
+        if (game.input.activePointer.x > 0 && game.input.activePointer.y > 0) {
+            this.antibody.rotation = game.physics.arcade.moveToPointer(this.antibody, 60, game.input.activePointer, 1500);
+        }
+    
         if (game.input.activePointer.leftButton.isDown) {
             var bullet = this.antibodyWeapon.fire();
 
