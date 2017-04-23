@@ -27,6 +27,9 @@ var lungsState = {
 
     create: function() {
 
+        this.maxSimultaneousBacteria = infectionLevels[activeInfectionLevelIndex].maxSimultaneousBacteria;
+        this.totalBacteria = infectionLevels[activeInfectionLevelIndex].totalBacteria;
+
         game.stage.backgroundColor = '#FFB6C1';
 
         this.antibody = new Antibody(game);

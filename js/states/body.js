@@ -7,6 +7,10 @@ var bodyState = {
     brain: null,
     sounds: {},
 
+    launchText: null,
+    infectionLevelText: null,
+    plusButton: null,
+
     selectedOrgan: '',
 
     init: function() {
@@ -21,6 +25,8 @@ var bodyState = {
         game.load.image('lungs', 'assets/sprites/lungs.png');
         game.load.image('heart', 'assets/sprites/heart.png');
         game.load.image('brain', 'assets/sprites/brain.png');
+
+        game.load.image('plus-button', 'assets/sprites/plus-button.png');
 
     },
 
@@ -58,6 +64,14 @@ var bodyState = {
         var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
         this.launchText = game.add.text(150, 50, 'Select an organ to rid it of bacteria!', style);
 
+        this.infectionLevelText = game.add.text(1350, 50, 'Infection level: ???', style);
+
+        this.plusButton = game.add.sprite(1300, 70, 'plus-button');
+        this.plusButton.anchor.setTo(0.5, 0.5);
+        game.add.tween(this.plusButton.scale).to({ x: 0.80, y: 0.80}, 500, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
+        this.plusButton.inputEnabled = true;
+        this.plusButton.events.onInputDown.add(this.adjustDifficulty, this);
+
     },
 
 
@@ -75,6 +89,12 @@ var bodyState = {
             this.launchText.text += '\n\nPress the '+this.selectedOrgan+' to begin.';
             
         }
+
+        var formattedInfectionLevelName = infectionLevels[activeInfectionLevelIndex].name.charAt(0).toUpperCase() + 
+                                            infectionLevels[activeInfectionLevelIndex].name.slice(1);
+
+        this.infectionLevelText.text = 'Infection level: '+formattedInfectionLevelName;
+        this.infectionLevelText.text += '\nPress (+) to alter difficulty.'
 
     },
 
@@ -115,6 +135,16 @@ var bodyState = {
 
     launchState: function() {
         game.state.start(this.selectedOrgan);
+    },
+
+    adjustDifficulty: function() {
+        this.playClickSound();
+
+        activeInfectionLevelIndex++;
+
+        if (activeInfectionLevelIndex >= infectionLevels.length) {
+            activeInfectionLevelIndex = 0;
+        }
     },
 
     getOrganInfo: function()
