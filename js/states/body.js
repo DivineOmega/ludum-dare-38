@@ -56,7 +56,7 @@ var bodyState = {
 
         if (this.selectedOrgan) {
             var formattedOrganName = this.selectedOrgan.charAt(0).toUpperCase() + this.selectedOrgan.slice(1);
-            this.launchText.text = formattedOrganName+'!\n\nTap the '+this.selectedOrgan+' again to begin!';
+            this.launchText.text = formattedOrganName+'!\n\nPress the '+this.selectedOrgan+' again to begin.';
             
         }
 
