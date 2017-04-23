@@ -78,7 +78,7 @@ var lungsState = {
         }
 
         if (this.alveolis.countLiving() <= 0) {
-            game.state.start('fail', true, false, 'heart', 'All the alveolio were destroyed by the bacteria.');
+            game.state.start('fail', true, false, 'heart', 'All the alveoli were destroyed by the bacteria.');
         }
 
         if (!this.antibody.alive) {
