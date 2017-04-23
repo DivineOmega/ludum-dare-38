@@ -56,3 +56,11 @@ Antibody.prototype.takeDamage = function() {
     }
     
 };
+
+Antibody.prototype.takePercentageDamage = function(percentage) {
+
+    var decimalPercentage = percentage / 100;
+
+    this.hp = this.hp * (1 - decimalPercentage);
+
+};

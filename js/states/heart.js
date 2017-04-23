@@ -100,7 +100,7 @@ var heartState = {
     redBloodCellHit: function(bullet, redBloodCell) {
         bullet.kill();
         redBloodCell.kill();
-        this.antibody.hp = this.antibody.hp * 0.90;
+        this.antibody.takePercentageDamage(10)
     }
 
 
