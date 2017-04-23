@@ -76,11 +76,11 @@ var heartState = {
         }
 
         if (this.bacterias.countDead() >= this.totalBacteria) {
-            game.state.start('body');
+             game.state.start('success', true, false, 'heart');
         }
 
         if (!this.antibody.alive) {
-            game.state.start('body');
+            game.state.start('fail', true, false, 'heart', 'You ran out of energy. Touching bacteria or killin red blood cells will reduce your energy levels.');
         }
 
         this.scoreText.text = (this.totalBacteria - this.bacterias.countDead())+' bacteria remaining in heart';

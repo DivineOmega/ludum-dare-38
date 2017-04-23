@@ -74,15 +74,15 @@ var lungsState = {
         }
 
         if (this.bacterias.countDead() >= this.totalBacteria) {
-            game.state.start('body');
+            game.state.start('success', true, false, 'lungs');
         }
 
         if (this.alveolis.countLiving() <= 0) {
-            game.state.start('body');
+            game.state.start('fail', true, false, 'heart', 'All the alveolio were destroyed by the bacteria.');
         }
 
         if (!this.antibody.alive) {
-            game.state.start('body');
+            game.state.start('fail', true, false, 'heart', 'You ran out of energy. Touching bacteria will reduce your energy levels.');
         }
 
         this.scoreText.text = (this.totalBacteria - this.bacterias.countDead())+' bacteria remaining in lungs';
