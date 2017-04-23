@@ -1,16 +1,21 @@
 
 var failState = {
 
+    sounds: {},
+
     init: function(organ, reason) {
         this.organ = organ;
         this.reason = reason;
     },
 
     preload: function() {
-
+        game.load.audio('splat1', 'assets/audio/splat1.mp3');
     },
 
     create: function() {
+
+        this.sounds = {};
+        this.sounds.splat1 = game.add.audio('splat1');
 
         game.stage.backgroundColor = "#FFB6C1";
 
@@ -25,10 +30,15 @@ var failState = {
 
     },
 
+    playClickSound: function() {
+        this.sounds.splat1.play();
+        this.sounds.splat1._sound.playbackRate.value = 1.2 + (0.4 * game.rnd.frac());
+    },
 
     update: function() {
 
         if (game.input.activePointer.leftButton.isDown) {
+            this.playClickSound();
             game.state.start('body');
         }
 

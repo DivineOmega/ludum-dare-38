@@ -10,10 +10,12 @@ var bodyState = {
     selectedOrgan: '',
 
     init: function() {
-        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        
     },
 
     preload: function() {
+
+        game.load.audio('splat1', 'assets/audio/splat1.mp3');
         
         game.load.image('body', 'assets/sprites/body.png');
         game.load.image('lungs', 'assets/sprites/lungs.png');
@@ -23,6 +25,9 @@ var bodyState = {
     },
 
     create: function() {
+
+        this.sounds = {};
+        this.sounds.splat1 = game.add.audio('splat1');
 
         game.stage.backgroundColor = "#FFB6C1";
 
@@ -73,7 +78,14 @@ var bodyState = {
 
     },
 
+    playClickSound: function() {
+        this.sounds.splat1.play();
+        this.sounds.splat1._sound.playbackRate.value = 1.2 + (0.4 * game.rnd.frac());
+    },
+
     clickedLungs: function() {
+        this.playClickSound();
+
         if (this.selectedOrgan=='lungs') {
             this.launchState();
         }
@@ -82,6 +94,8 @@ var bodyState = {
     },
 
     clickedHeart: function() {
+        this.playClickSound();
+
         if (this.selectedOrgan=='heart') {
             this.launchState();
         }
@@ -90,6 +104,8 @@ var bodyState = {
     },
 
     clickedBrain: function() {
+        this.playClickSound();
+
         if (this.selectedOrgan=='brain') {
             this.launchState();
         }
