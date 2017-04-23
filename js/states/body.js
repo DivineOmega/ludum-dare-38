@@ -47,7 +47,7 @@ var bodyState = {
         this.brain.events.onInputDown.add(this.clickedBrain, this);
 
         var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
-        this.launchText = game.add.text(200, 50, 'Select an organ!', style);
+        this.launchText = game.add.text(150, 50, 'Select an organ to rid it of bacteria!', style);
 
     },
 
@@ -56,7 +56,14 @@ var bodyState = {
 
         if (this.selectedOrgan) {
             var formattedOrganName = this.selectedOrgan.charAt(0).toUpperCase() + this.selectedOrgan.slice(1);
-            this.launchText.text = formattedOrganName+'!\n\nPress the '+this.selectedOrgan+' again to begin.';
+            this.launchText.text = formattedOrganName+'!';
+
+            var organInfo = this.getOrganInfo();
+            if (organInfo) {
+                this.launchText.text += '\n\n'+organInfo;
+            }
+
+            this.launchText.text += '\n\nPress the '+this.selectedOrgan+' to begin.';
             
         }
 
@@ -88,6 +95,19 @@ var bodyState = {
 
     launchState: function() {
         game.state.start(this.selectedOrgan);
+    },
+
+    getOrganInfo: function()
+    {
+        switch (this.selectedOrgan) {
+            case 'brain':
+                return 'Beware of stray neurons in your way. \nThey will disrupt your shots.';
+                break;
+        
+            default:
+                return '';
+                break;
+        }
     }
 
 }
