@@ -9,6 +9,10 @@ var bodyState = {
 
     selectedOrgan: '',
 
+    init: function() {
+        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    },
+
     preload: function() {
         
         game.load.image('body', 'assets/sprites/body.png');
