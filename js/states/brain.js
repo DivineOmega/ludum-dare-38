@@ -10,7 +10,7 @@ var brainState = {
 
     maxSimultaneousBacteria: 10,
     totalBacteria: 40,
-    totalSynapses: 4,
+    totalSynapses: 6,
 
     preload: function() {
         

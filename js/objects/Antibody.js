@@ -12,8 +12,8 @@ Antibody = function (game) {
     this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
     this.weapon.bulletSpeed = 600;
     this.weapon.fireRate = 200;
-    this.weapon.bulletAngleOffset = 90;
     this.weapon.bulletAngleVariance = 5;
+    this.weapon.bulletRotateToVelocity = true;
     this.weapon.trackSprite(this, 0, 0, true);
 
     game.add.tween(this.scale).to({ x: 0.9, y: 0.9}, 500, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
@@ -36,6 +36,7 @@ Antibody.prototype.update = function() {
         var bullet = this.weapon.fire();
 
         if (bullet) {
+            bullet.body.bounce.set(1, 1);
             this.sounds.splat1.play(); 
             this.sounds.splat1._sound.playbackRate.value = 1.2 + (0.4 * game.rnd.frac());
         }
