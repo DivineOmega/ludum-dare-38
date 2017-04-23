@@ -50,6 +50,7 @@ Antibody.prototype.takeDamage = function() {
     this.hp = this.hp - 0.01;
 
     if (this.hp <= 0) {
+        this.hp = 0;
         game.add.tween(this.scale).to({ x: 0, y: 0}, 500, Phaser.Easing.Bounce.Out, true, 0, 0).onComplete.add(function() {
             this.kill();
         }, this);
