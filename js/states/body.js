@@ -104,8 +104,16 @@ var bodyState = {
                 return 'Beware of stray neurons in your way. \nThey will disrupt your shots.';
                 break;
         
-            default:
+            case 'heart':
                 return 'Red blood cells sustain you. \nDamaging them will hurt you.';
+                break;
+
+            case 'lungs':
+                return 'Alveoli are needed to breath. \nBacteria can damage them. \nAt least one must survive.';
+                break;
+
+            case 'default':
+                return '';
                 break;
         }
     }

@@ -3,12 +3,14 @@ var lungsState = {
 
     antibody: null,
     bacterias: null,
+    alveolis: null,
 
     scoreText: null,
     energyText: null,
 
     maxSimultaneousBacteria: 10,
     totalBacteria: 40,
+    totalAlveoli: 6,
 
     preload: function() {
         
@@ -18,6 +20,8 @@ var lungsState = {
 
         game.load.image('bacteria', 'assets/sprites/bacteria.png');
         game.load.audio('impact-splat', 'assets/audio/impact-splat.mp3');
+
+        game.load.image('alveoli', 'assets/sprites/alveoli.png');
 
     },
 
@@ -29,6 +33,11 @@ var lungsState = {
         game.add.existing(this.antibody);
 
         this.bacterias = game.add.group();
+        this.alveolis = game.add.group();
+
+        for (var i = 0; i < this.totalAlveoli; i++) {
+            this.spawnAlveoli();           
+        }
 
         var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
         this.scoreText = game.add.text(50, 50, '? bacteria remaining in lungs', style);
@@ -42,6 +51,12 @@ var lungsState = {
         
     },
 
+    spawnAlveoli : function() {
+        
+        this.alveolis.add(new Alveoli(game));
+        
+    },
+
 
     update: function() {
 
@@ -50,6 +65,7 @@ var lungsState = {
         game.physics.arcade.collide(this.antibody, this.bacterias, this.antibodyHit, null, this);
 
         game.physics.arcade.collide(this.bacterias, this.bacterias);
+        game.physics.arcade.collide(this.bacterias, this.alveolis, this.alveoliHit, null, this);
 
         if (this.bacterias.countLiving() + this.bacterias.countDead() < this.totalBacteria) {
             if (this.bacterias.countLiving() < this.maxSimultaneousBacteria) {
@@ -58,6 +74,10 @@ var lungsState = {
         }
 
         if (this.bacterias.countDead() >= this.totalBacteria) {
+            game.state.start('body');
+        }
+
+        if (this.alveolis.countLiving() <= 0) {
             game.state.start('body');
         }
 
@@ -77,6 +97,10 @@ var lungsState = {
     bacteriaHit: function(bullet, bacteria) {
         bullet.kill();
         bacteria.takeDamage();
+    },
+
+    alveoliHit: function(bacteria, alveoli) {
+        alveoli.takeDamage();
     }
 
 

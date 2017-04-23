@@ -4,8 +4,8 @@ Synapse = function (game) {
     var maxVeloctiy = 1000
     var maxAngularVelocity = 100;
 
-    var x = game.rnd.integerInRange(0, 1920);
-    var y = game.rnd.integerInRange(0, 1080);
+    var x = game.rnd.integerInRange(0, 1920-100);
+    var y = game.rnd.integerInRange(0, 1080-100);
 
     Phaser.Sprite.call(this, game, x, y, 'synapse');
 
