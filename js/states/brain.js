@@ -3,12 +3,14 @@ var brainState = {
 
     antibody: null,
     bacterias: null,
+    synapses: null,
 
     scoreText: null,
     energyText: null,
 
     maxSimultaneousBacteria: 10,
     totalBacteria: 40,
+    totalSynapses: 4,
 
     preload: function() {
         
@@ -18,6 +20,8 @@ var brainState = {
 
         game.load.image('bacteria', 'assets/sprites/bacteria.png');
         game.load.audio('impact-splat', 'assets/audio/impact-splat.mp3');
+
+        game.load.image('synapse', 'assets/sprites/synapse.png');
 
     },
 
@@ -29,6 +33,11 @@ var brainState = {
         game.add.existing(this.antibody);
 
         this.bacterias = game.add.group();
+        this.synapses = game.add.group();
+
+        for (var i = 0; i < this.totalSynapses; i++) {
+            this.spawnSynapse();           
+        }
 
         var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
         this.scoreText = game.add.text(50, 50, '? bacteria remaining in brain', style);
@@ -42,14 +51,23 @@ var brainState = {
         
     },
 
+    spawnSynapse : function() {
+        
+        this.synapses.add(new Synapse(game));
+        
+    },
+
 
     update: function() {
 
         game.physics.arcade.collide(this.antibody.weapon.bullets, this.bacterias, this.bacteriaHit, null, this);
+        game.physics.arcade.collide(this.antibody.weapon.bullets, this.synapses);
 
         game.physics.arcade.collide(this.antibody, this.bacterias, this.antibodyHit, null, this);
+        game.physics.arcade.collide(this.antibody, this.synapses), this.antibodyHit, null, this;
 
         game.physics.arcade.collide(this.bacterias, this.bacterias);
+        game.physics.arcade.collide(this.bacterias, this.synapses);
 
         if (this.bacterias.countLiving() + this.bacterias.countDead() < this.totalBacteria) {
             if (this.bacterias.countLiving() < this.maxSimultaneousBacteria) {
