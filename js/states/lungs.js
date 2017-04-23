@@ -4,8 +4,6 @@ var lungsState = {
     antibody: null,
     bacterias: null,
 
-    sounds: {},
-
     scoreText: null,
     energyText: null,
 
@@ -29,8 +27,6 @@ var lungsState = {
 
         this.antibody = new Antibody(game);
         game.add.existing(this.antibody);
-
-        this.sounds.impactSplat = game.add.audio('impact-splat');
 
         this.bacterias = game.add.group();
 
@@ -79,7 +75,6 @@ var lungsState = {
     },
 
     bacteriaHit: function(bullet, bacteria) {
-        this.sounds.impactSplat.play();
         bullet.kill();
         bacteria.takeDamage();
     }

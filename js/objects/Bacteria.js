@@ -18,6 +18,9 @@ Bacteria = function (game,targetAntibody) {
     this.anchor.setTo(0.5, 0.5);
     this.body.drag.setTo(2000);
     game.add.tween(this.scale).to({ x: 0.9, y: 0.9}, 300, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
+
+    this.sounds = {};
+    this.sounds.impactSplat = game.add.audio('impact-splat');
 };
 
 Bacteria.prototype = Object.create(Phaser.Sprite.prototype);
@@ -32,6 +35,8 @@ Bacteria.prototype.update = function() {
 };
 
 Bacteria.prototype.takeDamage = function() {
+
+    this.sounds.impactSplat.play();
 
     this.hp = this.hp - 1;
 
