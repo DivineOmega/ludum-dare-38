@@ -7,6 +7,8 @@ var bodyState = {
     brain: null,
     sounds: {},
 
+    selectedOrgan: '',
+
     preload: function() {
         
         game.load.image('body', 'assets/sprites/body.png');
@@ -19,6 +21,8 @@ var bodyState = {
     create: function() {
 
         game.stage.backgroundColor = "#FFB6C1";
+
+        this.selectedOrgan = '';
 
         this.body = game.add.sprite(1920/2, 1080/2, 'body');
         this.body.anchor.setTo(0.5, 0.5);
@@ -42,24 +46,48 @@ var bodyState = {
         this.brain.inputEnabled = true;
         this.brain.events.onInputDown.add(this.clickedBrain, this);
 
+        var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
+        this.launchText = game.add.text(200, 50, 'Select an organ!', style);
+
     },
 
 
     update: function() {
 
+        if (this.selectedOrgan) {
+            var formattedOrganName = this.selectedOrgan.charAt(0).toUpperCase() + this.selectedOrgan.slice(1);
+            this.launchText.text = formattedOrganName+'!\n\nTap the '+this.selectedOrgan+' again to begin!';
+            
+        }
 
     },
 
     clickedLungs: function() {
-        game.state.start('lungs');
+        if (this.selectedOrgan=='lungs') {
+            this.launchState();
+        }
+
+        this.selectedOrgan = 'lungs';
     },
 
-     clickedHeart: function() {
-        game.state.start('heart');
+    clickedHeart: function() {
+        if (this.selectedOrgan=='heart') {
+            this.launchState();
+        }
+
+        this.selectedOrgan = 'heart';
     },
 
     clickedBrain: function() {
-        game.state.start('brain');
+        if (this.selectedOrgan=='brain') {
+            this.launchState();
+        }
+
+        this.selectedOrgan = 'brain';
+    },
+
+    launchState: function() {
+        game.state.start(this.selectedOrgan);
     }
 
 }
