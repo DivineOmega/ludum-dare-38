@@ -105,7 +105,7 @@ var bodyState = {
                 break;
         
             default:
-                return '';
+                return 'Red blood cells sustain you. \nDamaging them will hurt you.';
                 break;
         }
     }

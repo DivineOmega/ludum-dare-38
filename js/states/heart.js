@@ -3,12 +3,14 @@ var heartState = {
 
     antibody: null,
     bacterias: null,
+    redBloodCells: null,
 
     scoreText: null,
     energyText: null,
 
     maxSimultaneousBacteria: 10,
     totalBacteria: 40,
+    totalRedBloodCells: 20,
 
     preload: function() {
         
@@ -18,6 +20,8 @@ var heartState = {
 
         game.load.image('bacteria', 'assets/sprites/bacteria.png');
         game.load.audio('impact-splat', 'assets/audio/impact-splat.mp3');
+
+        game.load.image('red-blood-cell', 'assets/sprites/red-blood-cell.png');
 
     },
 
@@ -29,6 +33,11 @@ var heartState = {
         game.add.existing(this.antibody);
 
         this.bacterias = game.add.group();
+        this.redBloodCells = game.add.group();
+
+        for (var i = 0; i < this.totalRedBloodCells; i++) {
+            this.spawnRedBloodCell();           
+        }
 
         var style = { font: 'bold 32px Arial', fill: '#fff', stroke: '#000000', strokeThickness: 6 };
         this.scoreText = game.add.text(50, 50, '? bacteria remaining in heart', style);
@@ -42,14 +51,23 @@ var heartState = {
         
     },
 
+    spawnRedBloodCell : function() {
+        
+        this.redBloodCells.add(new RedBloodCell(game));
+        
+    },
+
 
     update: function() {
 
         game.physics.arcade.collide(this.antibody.weapon.bullets, this.bacterias, this.bacteriaHit, null, this);
+        game.physics.arcade.collide(this.antibody.weapon.bullets, this.redBloodCells, this.redBloodCellHit, null, this);
 
         game.physics.arcade.collide(this.antibody, this.bacterias, this.antibodyHit, null, this);
+        game.physics.arcade.collide(this.antibody, this.redBloodCells);
 
         game.physics.arcade.collide(this.bacterias, this.bacterias);
+        game.physics.arcade.collide(this.bacterias, this.redBloodCells);
 
         if (this.bacterias.countLiving() + this.bacterias.countDead() < this.totalBacteria) {
             if (this.bacterias.countLiving() < this.maxSimultaneousBacteria) {
@@ -77,6 +95,12 @@ var heartState = {
     bacteriaHit: function(bullet, bacteria) {
         bullet.kill();
         bacteria.takeDamage();
+    },
+
+    redBloodCellHit: function(bullet, redBloodCell) {
+        bullet.kill();
+        redBloodCell.kill();
+        this.antibody.hp = this.antibody.hp * 0.90;
     }
 
 
