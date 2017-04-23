@@ -109,7 +109,7 @@ var bodyState = {
                 break;
 
             case 'lungs':
-                return 'Alveoli are needed to breath. \nBacteria can damage them. \nAt least one must survive.';
+                return 'Alveoli are needed to breath. \nBacteria can damage them. \nProtect at least one.';
                 break;
 
             case 'default':
