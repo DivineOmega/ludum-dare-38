@@ -3,12 +3,14 @@ var bodyState = {
 
     body: null,
     lungs: null,
+    brain: null,
     sounds: {},
 
     preload: function() {
         
         game.load.image('body', 'assets/sprites/body.png');
         game.load.image('lungs', 'assets/sprites/lungs.png');
+        game.load.image('brain', 'assets/sprites/brain.png');
 
     },
 
@@ -26,6 +28,12 @@ var bodyState = {
         this.lungs.inputEnabled = true;
         this.lungs.events.onInputDown.add(this.clickedLungs, this);
 
+        this.brain = game.add.sprite(this.body.x, this.body.y - 440, 'brain');
+        this.brain.anchor.setTo(0.5, 0.5);
+        game.add.tween(this.brain.scale).to({ x: 0.97, y: 0.97}, 2000, Phaser.Easing.Bounce.Out, true, 0, -1).yoyo(true, 100);
+        this.brain.inputEnabled = true;
+        this.brain.events.onInputDown.add(this.clickedBrain, this);
+
     },
 
 
@@ -36,8 +44,10 @@ var bodyState = {
 
     clickedLungs: function() {
         game.state.start('lungs');
+    },
+
+    clickedBrain: function() {
+        game.state.start('brain');
     }
-
-
 
 }
