@@ -32,7 +32,7 @@ Antibody.prototype.update = function() {
         this.rotation = game.physics.arcade.moveToPointer(this, 60, game.input.activePointer, 1500);
     }
 
-    if (game.input.activePointer.leftButton.isDown) {
+    if (game.input.activePointer.isDown) {
         var bullet = this.weapon.fire();
 
         if (bullet) {

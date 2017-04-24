@@ -32,7 +32,7 @@ var startState = {
 
     update: function() {
 
-        if (game.input.activePointer.leftButton.isDown) {
+        if (game.input.activePointer.isDown) {
             game.state.start('body');
         }
 

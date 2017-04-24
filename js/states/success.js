@@ -37,7 +37,7 @@ var successState = {
 
     update: function() {
 
-        if (game.input.activePointer.leftButton.isDown) {
+        if (game.input.activePointer.isDown) {
             this.playClickSound();
             game.state.start('body');
         }
