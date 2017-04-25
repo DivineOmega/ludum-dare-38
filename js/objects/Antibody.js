@@ -38,7 +38,9 @@ Antibody.prototype.update = function() {
         if (bullet) {
             bullet.body.bounce.set(1, 1);
             this.sounds.splat1.play(); 
-            this.sounds.splat1._sound.playbackRate.value = 1.2 + (0.4 * game.rnd.frac());
+            if (this.sounds.splat1._sound != null) {
+                this.sounds.splat1._sound.playbackRate.value = 1.2 + (0.4 * game.rnd.frac());
+            }
         }
                     
     }

@@ -100,7 +100,9 @@ var bodyState = {
 
     playClickSound: function() {
         this.sounds.splat1.play();
-        this.sounds.splat1._sound.playbackRate.value = 1.2 + (0.4 * game.rnd.frac());
+        if (this.sounds.splat1._sound != null) {
+            this.sounds.splat1._sound.playbackRate.value = 1.2 + (0.4 * game.rnd.frac());
+        }
     },
 
     clickedLungs: function() {
